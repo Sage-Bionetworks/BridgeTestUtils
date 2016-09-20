@@ -24,6 +24,12 @@ public class InMemoryJedisOps extends JedisOps {
         }
         return 1L;
     }
+    
+    @Override
+    public String set(String key, String value) {
+        map.put(key, value);
+        return "OK";
+    }
 
     @Override
     public String setex(String key, int seconds, String value) {
