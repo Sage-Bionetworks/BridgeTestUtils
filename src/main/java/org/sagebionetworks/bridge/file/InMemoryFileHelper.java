@@ -96,6 +96,16 @@ public class InMemoryFileHelper extends FileHelper {
     }
 
     @Override
+    public long fileSize(File file) {
+        byte[] fileContent = fileMap.get(file.getAbsolutePath());
+        if (fileContent != null) {
+            return fileContent.length;
+        } else {
+            return 0L;
+        }
+    }
+
+    @Override
     public void moveFiles(File from, File to) throws FileNotFoundException {
         String fromPath = from.getAbsolutePath();
         if (!fileMap.containsKey(fromPath)) {
