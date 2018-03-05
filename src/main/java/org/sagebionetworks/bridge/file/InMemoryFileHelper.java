@@ -143,6 +143,14 @@ public class InMemoryFileHelper extends FileHelper {
         return dirSet.isEmpty() && fileMap.isEmpty();
     }
 
+    // helper method to support tests
+    public void writeBytes(File file, byte[] content) {
+        // No need to check if the file exists, because like the real file system, the file won't be created until
+        // you write.
+        String filePath = file.getAbsolutePath();
+        fileMap.put(filePath, content);
+    }
+
     private static File makeMockFile(String absolutePath, String name) {
         File mockFile = mock(File.class);
         when(mockFile.getAbsolutePath()).thenReturn(absolutePath);
