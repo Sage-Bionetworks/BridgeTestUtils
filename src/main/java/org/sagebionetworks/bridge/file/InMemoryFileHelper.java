@@ -77,6 +77,19 @@ public class InMemoryFileHelper extends FileHelper {
         dirSet.remove(dirPath);
     }
 
+    // To make this helper accurate, we delete the directory, then we iterate over all files and dirs and delete them
+    // if they are in this directory (have this directory + '/' as a prefix).
+    @Override
+    public void deleteDirRecursively(File dir) throws IOException {
+        // Delete directory.
+        deleteDir(dir);
+
+        // Delete all directories and files with this as a prefix.
+        String dirPrefix = dir.getAbsolutePath() + '/';
+        dirSet.removeIf(otherDir -> otherDir.startsWith(dirPrefix));
+        fileMap.entrySet().removeIf(entry -> entry.getKey().startsWith(dirPrefix));
+    }
+
     // Throws IllegalArgumentException because even though the prod method logs exceptions and swallows them, we want
     // our tests to fail if we try to delete a non-existent file.
     @Override
@@ -128,6 +141,14 @@ public class InMemoryFileHelper extends FileHelper {
     // helper method to support tests
     public boolean isEmpty() {
         return dirSet.isEmpty() && fileMap.isEmpty();
+    }
+
+    // helper method to support tests
+    public void writeBytes(File file, byte[] content) {
+        // No need to check if the file exists, because like the real file system, the file won't be created until
+        // you write.
+        String filePath = file.getAbsolutePath();
+        fileMap.put(filePath, content);
     }
 
     private static File makeMockFile(String absolutePath, String name) {
