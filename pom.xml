@@ -67,10 +67,13 @@
     </build>
 
     <distributionManagement>
+        <site>
+            <id>s3.site</id>
+            <url>s3://developer.sagebridge.org/${project.artifactId}/${project.version}</url>
+        </site>
         <repository>
-            <id>org-sagebridge-repo-maven-releases</id>
-            <name>org-sagebridge-repo-maven-releases</name>
-            <url>https://repo-maven.sagebridge.org/</url>
+            <id>s3.release</id>
+            <url>s3://org-sagebridge-repo-maven-releases</url>
         </repository>
     </distributionManagement>
 </project>
